@@ -1,0 +1,25 @@
+Timer unit: 1e-07 s
+
+Total time: 1.06299 s
+File: C:\Users\Sviat\PycharmProjects\python_l3\test_functools\test_reduce.py
+Function: test_define_possible_owners at line 27
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    27                                           @profile
+    28                                           def test_define_possible_owners() -> None:
+    29                                               # Arrange
+    30         1         74.0     74.0      0.0      slides = (Slide("cinema"), Slide("game"), Slide("book"))
+    31                                           
+    32                                               # Act
+    33    100001     172287.0      1.7      1.6      for _ in range(100_000):
+    34    100000    4128042.0     41.3     38.8          reduce_result = reduce(add, [define_possible_owners(slide) for slide in slides])
+    35    200000    6184589.0     30.9     58.2          lc_result = [
+    36                                                       possible_owner
+    37    100000     144852.0      1.4      1.4              for slide in slides
+    38                                                       for possible_owner in define_possible_owners(slide)
+    39                                                   ]
+    40                                               # Assert
+    41         1         18.0     18.0      0.0      assert reduce_result == lc_result == ["Publisher", "Author", "Author", "Folk art"]
+
+  1.06 seconds - C:\Users\Sviat\PycharmProjects\python_l3\test_functools\test_reduce.py:27 - test_define_possible_owners
