@@ -13,7 +13,8 @@ from typing import Any, Protocol
 
 class HasComputedField(Protocol):
     @property
-    def computed_field(self) -> str: ...
+    def computed_field(self) -> str:
+        ...
 
 
 class ObjectWithoutCustomEqMethod:

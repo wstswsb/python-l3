@@ -25,8 +25,8 @@ house_greetings = partial(__present_greetings, "House", "Doctor")
         ("House", "Hello, Dr. House from Diagnostics."),
         ("Cameron", "Hello, Dr. Cameron from Diagnostics."),
         ("Foreman", "Hello, Dr. Foreman from Diagnostics."),
-        ("Chase", "Hello, Dr. Chase from Diagnostics.")
-    ]
+        ("Chase", "Hello, Dr. Chase from Diagnostics."),
+    ],
 )
 def test_doctor_greetings__diagnostics_team(surname: str, expected_result: str) -> None:
     # Act

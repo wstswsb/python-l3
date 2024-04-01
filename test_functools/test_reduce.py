@@ -31,10 +31,9 @@ def test_define_possible_owners() -> None:
     # Act
     reduce_result = reduce(add, [define_possible_owners(slide) for slide in slides])
     lc_result = [
-            possible_owner
-            for slide in slides
-            for possible_owner in define_possible_owners(slide)
-        ]
+        possible_owner
+        for slide in slides
+        for possible_owner in define_possible_owners(slide)
+    ]
     # Assert
     assert reduce_result == lc_result == ["Publisher", "Author", "Author", "Folk art"]
-
