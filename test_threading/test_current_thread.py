@@ -1,7 +1,7 @@
-from threading import current_thread, Thread
+from threading import Thread, current_thread
 
 
-def test_current_thread():
+def test_current_thread() -> None:
     # Act
     result = current_thread()
 
