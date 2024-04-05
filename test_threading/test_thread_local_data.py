@@ -5,7 +5,7 @@ thread_shared = {}
 log = []
 
 
-def target(value: str | None) -> None:
+def target(value: str | None) -> str | None:
     thread_local.value = value
 
     with threading.Lock():
