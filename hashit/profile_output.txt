@@ -1,0 +1,64 @@
+Timer unit: 1e-09 s
+
+Total time: 0.00833447 s
+File: /home/dunice/hashit/sha_prof.py
+Function: ahash_it at line 26
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    26                                           @profile  # type: ignore
+    27                                           async def ahash_it(binary: bytes) -> str:
+    28       100     121882.0   1218.8      1.5      hashed_256_coro = asyncio.to_thread(sha256, binary)
+    29       100      78903.0    789.0      0.9      hashed_512_coro = asyncio.to_thread(sha512, binary)
+    30       100      65581.0    655.8      0.8      hashed_md5_coro = asyncio.to_thread(md5, binary)
+    31       100      86160.0    861.6      1.0      hashed_sha3_coro = asyncio.to_thread(sha3_224, binary)
+    32                                           
+    33       200    7176680.0  35883.4     86.1      hashes = await asyncio.gather(
+    34       100      25809.0    258.1      0.3          hashed_256_coro,
+    35       100      23677.0    236.8      0.3          hashed_512_coro,
+    36       100      23907.0    239.1      0.3          hashed_md5_coro,
+    37       100      22850.0    228.5      0.3          hashed_sha3_coro,
+    38                                               )
+    39       100     642959.0   6429.6      7.7      hashed = hashes[0].hexdigest()
+    40       100      66057.0    660.6      0.8      return hashed
+
+Total time: 2.93766 s
+File: /home/dunice/hashit/sha_prof.py
+Function: hash_it at line 17
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    17                                           @profile  # type: ignore
+    18                                           def hash_it(binary: bytes) -> str:
+    19       100  907071711.0    9e+06     30.9      hashed_256 = sha256(binary)
+    20       100  639100336.0    6e+06     21.8      sha512(binary)
+    21       100  450438112.0    5e+06     15.3      md5(binary)
+    22       100  940155931.0    9e+06     32.0      sha3_224(binary)
+    23       100     896274.0   8962.7      0.0      return hashed_256.hexdigest()
+
+Total time: 3.91247 s
+File: /home/dunice/hashit/sha_prof.py
+Function: main at line 67
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    67                                           @profile  # type: ignore
+    68                                           def main() -> None:
+    69         1   12668670.0    1e+07      0.3      console.print(f"{LOOP_PASSES=}")
+    70         1     697429.0 697429.0      0.0      console.print(f"{FILENAME=}")
+    71         1      90271.0  90271.0      0.0      with open("WP", "r") as file:
+    72         1   13868664.0    1e+07      0.4          book = file.readlines()
+    73         1    8247605.0    8e+06      0.2      binary = "".join(book).encode("utf8")
+    74         1 2944272454.0    3e+09     75.3      sync_hashes = sync_main(binary)
+    75         1  930235921.0    9e+08     23.8      async_hashes = asyncio.run(async_main(binary))
+    76         1    1199935.0    1e+06      0.0      console.print(f"{sync_hashes[:2]= }")
+    77         1    1183108.0    1e+06      0.0      console.print(f"{async_hashes[:2]=}")
+    78         1        325.0    325.0      0.0      try:
+    79         1       5921.0   5921.0      0.0          assert sync_hashes == async_hashes
+    80                                               except Exception:
+    81                                                   console.print_exception()
+    82                                                   sys.exit(1)
+
+  0.01 seconds - /home/dunice/hashit/sha_prof.py:26 - ahash_it
+  2.94 seconds - /home/dunice/hashit/sha_prof.py:17 - hash_it
+  3.91 seconds - /home/dunice/hashit/sha_prof.py:67 - main
