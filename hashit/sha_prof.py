@@ -1,8 +1,8 @@
 import asyncio
 import os
 import sys
-from datetime import datetime
-from hashlib import sha256, sha512, md5, sha3_224
+from datetime import UTC, datetime
+from hashlib import md5, sha3_224, sha256, sha512
 
 from line_profiler import profile
 from rich.console import Console
@@ -43,24 +43,24 @@ async def ahash_it(binary: bytes) -> str:
 
 
 def sync_main(binary: bytes) -> list[str]:
-    console.print(f"[{datetime.utcnow()}] sync_main called")
+    console.print(f"[{datetime.now(UTC)}] sync_main called")
     sync_hashes = []
-    for i in range(LOOP_PASSES):
+    for _ in range(LOOP_PASSES):
         sync_hashes.append(hash_it(binary))
-    console.print(f"[{datetime.utcnow()}] sync_main finished")
+    console.print(f"[{datetime.now(UTC)}] sync_main finished")
     return sync_hashes
 
 
 async def async_main(binary: bytes) -> list[str]:
-    console.print(f"[{datetime.utcnow()}] async_main called")
+    console.print(f"[{datetime.now(UTC)}] async_main called")
     result = []
     tasks = []
-    for i in range(LOOP_PASSES):
+    for _ in range(LOOP_PASSES):
         tasks.append(asyncio.create_task(ahash_it(binary)))
         if len(tasks) == 8:
-            result.extend([h for h in await asyncio.gather(*tasks)])
+            result.extend(await asyncio.gather(*tasks))
             tasks = []
-    result.extend([h for h in await asyncio.gather(*tasks)])
+    result.extend(await asyncio.gather(*tasks))
 
     console.print(f"[{datetime.utcnow()}] async_main finished")
     return result
@@ -70,7 +70,7 @@ async def async_main(binary: bytes) -> list[str]:
 def main() -> None:
     console.print(f"{LOOP_PASSES=}")
     console.print(f"{FILENAME=}")
-    with open(FILENAME, "r") as file:
+    with open(FILENAME) as file:
         book = file.readlines()
     binary = "".join(book).encode("utf8")
     sync_hashes = sync_main(binary)
